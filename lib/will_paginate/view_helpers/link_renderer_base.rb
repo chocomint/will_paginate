@@ -14,22 +14,24 @@ module WillPaginate
         # reset values in case we're re-using this instance
         @total_pages = nil
       end
-      
-      def pagination
-        items = @options[:page_links] ? windowed_page_numbers : []
+
+      def pagination        
+        items = @options[:page_links] ? windows_page_numbers : []
+        items.unshift :first_page
         items.unshift :previous_page
         items.push :next_page
+        items.push :last_page
       end
 
     protected
-    
+
       # Calculates visible page numbers using the <tt>:inner_window</tt> and
       # <tt>:outer_window</tt> options.
       def windowed_page_numbers
         inner_window, outer_window = @options[:inner_window].to_i, @options[:outer_window].to_i
         window_from = current_page - inner_window
         window_to = current_page + inner_window
-        
+
         # adjust lower or upper limit if other is out of bounds
         if window_to > total_pages
           window_from -= window_to - total_pages
@@ -40,7 +42,7 @@ module WillPaginate
           window_from = 1
           window_to = total_pages if window_to > total_pages
         end
-        
+
         # these are always visible
         middle = window_from..window_to
 
@@ -59,7 +61,7 @@ module WillPaginate
         else # runs into visible pages
           right = (middle.last + 1)..total_pages
         end
-        
+
         left.to_a + middle.to_a + right.to_a
       end
 
