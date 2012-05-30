@@ -64,11 +64,16 @@ module WillPaginate
       end
 
       def first_page
-        link("<<", 0, :class => "first_page")
+        if @collection.current_page != 0
+          link("<<", 0, :class => "first_page")
+        end
       end
 
       def last_page
-        link(">>", total_pages, :class => "first_page")
+        if @collection.current_page != total_pages
+          link(">>", total_pages, :class => "first_page")
+        end
+
       end
 
       def previous_or_next_page(page, text, classname)
