@@ -15,8 +15,8 @@ module WillPaginate
         @total_pages = nil
       end
 
-      def pagination        
-        items = @options[:page_links] ? windows_page_numbers : []
+      def pagination
+        items = @options[:page_links] ? windowed_page_numbers : []
         items.unshift :first_page
         items.unshift :previous_page
         items.push :next_page
